@@ -1,0 +1,110 @@
+/******************************************************************************
+
+                            Online C Compiler.
+                Code, Compile, Run and Debug C program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+*******************************************************************************/
+
+#include <stdio.h>
+#include <stdlib.h>
+typedef struct node{
+    int data;
+    struct node *right,*left;
+}node;
+node *start=NULL;
+void creation(){
+    node *temp,*t;
+    int i=0;
+    for(i=0;i<5;i++){
+    temp=malloc(sizeof(node *));
+    printf("enter the data: ");
+    scanf("%d",&temp->data);
+    temp->left=NULL;
+    temp->right=NULL;
+    if(start==NULL){
+        start=temp;
+    }
+    else{
+        t=start;
+        while(t->right!=NULL)
+          t=t->right;
+        t->right=temp;
+        temp->left=t;
+    }
+    
+    }
+}
+void display(){
+    node *temp;
+    temp=start;
+    while(temp!=NULL){
+        printf("%d",temp->data);
+        temp=temp->right;
+    }
+}
+void reverse(){
+    node *temp;
+    temp=start;
+    while(temp->right!=NULL)
+      temp=temp->right;
+    while(temp!=NULL){
+        printf("%d",temp->data);
+        temp=temp->left;
+    }
+}
+void reverse_without_left(){
+    node *nxt,*after,*parrent;
+    int count=0;
+    nxt=start;
+    while(nxt->right!=NULL)
+      nxt=nxt->right;
+     after=nxt->left;
+     parrent=nxt;
+     nxt=after->left;
+    while(after!=NULL){
+        if(count==0){
+            parrent->right=after;
+            after->left=parrent;
+            parrent->left=NULL;
+            start=parrent;
+            parrent=after;
+            after=nxt;
+            nxt=nxt->left;
+            ++count;
+            
+        }
+        else{
+            
+            if(nxt==NULL)
+            {
+            parrent->right=after;
+            after->left=parrent;
+            after->right=NULL;
+             parrent=after;
+            after=nxt;
+            }
+            else{
+            parrent->right=after;
+            after->left=parrent;
+            after->right=NULL;
+             parrent=after;
+            after=nxt;
+            nxt=nxt->left;
+            }
+        }
+    }
+}
+
+int main()
+{
+    creation();
+    display();
+    reverse();
+    reverse_without_left();
+    display();
+        reverse();
+
+
+    return 0;
+}
