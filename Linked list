@@ -1,0 +1,153 @@
+/******************************************************************************
+
+                            Online C Compiler.
+                Code, Compile, Run and Debug C program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+*******************************************************************************/
+
+#include <stdio.h>
+#include <stdlib.h>
+typedef struct node{
+    int data;
+    struct node *next;
+}node;
+void insertion(node *);
+int deletion(node *,int );
+void updation(node *,int );
+node * reverse(node *);
+void display(node *);
+node * alter(node *);
+
+
+int main()
+{
+    int key;
+    node *start;
+    start=(node *)malloc(sizeof(node));
+    printf("enter the first nodes data : ");
+    scanf("%d",&start->data);
+    start->next=NULL;
+    insertion(start);
+     display(start);
+    printf(" enter the key to be deleted : ");
+    scanf("%d",&key);
+    start=alter(start);
+    display(start);
+    key=deletion(start,key);
+    printf("the data deleted is %d ",key);
+    display(start);
+    
+    printf(" enter the key to be inserted after parrent : ");
+    scanf("%d",&key);
+    updation(start,key);
+    start=reverse(start);
+    display(start);
+    
+    return 0;
+}
+void insertion(node *start){
+    int i;
+    node *temp,*t;
+    for(i=0;i<5;i++){
+     temp=malloc(sizeof(node *));
+     printf("enter the nodes data : ");
+     scanf("%d",&temp->data);
+     temp->next=NULL;
+     t=(start);
+     while(t->next!=NULL)
+       t=t->next;
+      t->next=temp;
+     
+    }
+    printf("terminated");
+    return ;
+}
+int deletion(node *start,int key){
+    node *temp,*parrent;
+    int data;
+    if(start->data==key)
+    {
+        temp=start;
+        data=temp->data;
+        temp->next=NULL;
+        start=start->next;
+        free(temp);
+        
+    }
+    else{
+        temp=start;
+        while(temp->data!=key){
+            parrent=temp;
+            temp=temp->next;
+        }
+        parrent->next=temp->next;
+        temp->next=NULL;
+        data=temp->data;
+        free(temp);
+    }
+    return data;
+}
+void display(node *start){
+    node *temp;
+    temp=start;
+    while(temp!=NULL){
+        printf("%d",temp->data);
+        temp=temp->next;
+    }
+}
+node * reverse(node *start){
+    node *parrent,*after,*temp;
+    parrent=start;
+    after=parrent->next;
+    temp=after->next;
+    parrent->next=NULL;
+    while(after!=NULL){
+        after->next=parrent;
+        parrent=after;
+        after=temp;
+        if(temp==NULL)
+          break;
+        temp=temp->next;
+        
+    }
+    start=parrent;
+    return start;
+}
+void updation(node *start,int key){
+    node *temp,*t,*parrent;
+     temp=malloc(sizeof(node *));
+     printf("enter the nodes data : ");
+     scanf("%d",&temp->data);
+     temp->next=NULL;
+     t=(start);
+     while(t->data!=key){
+         parrent=t;
+       t=t->next;
+     }
+      parrent->next=temp;
+      temp->next=t;
+    
+}
+node *alter(node *start){
+    node *parrent,*after,*nxt,*nnext;
+     nnext=start;
+    while(nnext!=NULL){
+        after=nnext;
+        nxt=nnext->next;
+         nnext=nxt->next;
+        if(after==start){
+            after->next=nxt->next;
+            nxt->next=after;
+            parrent=after;
+            start=nxt;
+        }
+        else{
+        after->next=nxt->next;
+        nxt->next=after;
+        parrent->next=nxt;
+        parrent=after;
+        }
+    }
+    return start;
+}
