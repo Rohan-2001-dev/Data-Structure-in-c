@@ -1,0 +1,21 @@
+#include <stdio.h>
+void search(int a[],int n,int key){
+    int i;
+    for(i=0;i<n;i++){
+        if(a[i]==key)
+           printf("the key found in an array at index %d",i);
+    }
+}
+int main()
+{
+int i,key,a[5];
+  
+  for(i=0;i<5;i++){
+      printf("enter the  element you want in array : ");
+      scanf("%d",&a[i]);
+  }
+  printf("enter the key you want to search in array : ");
+  scanf("%d",&key);
+  search(a,5,key);
+    return 0;
+}
