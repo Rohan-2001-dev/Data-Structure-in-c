@@ -1,0 +1,45 @@
+/******************************************************************************
+
+                            Online C Compiler.
+                Code, Compile, Run and Debug C program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+*******************************************************************************/
+
+#include <stdio.h>
+#include<stdlib.h>
+int min(int x, int y) { return (x <= y) ? x : y; }
+
+int main()
+{
+    int a=0,b=0,f=1,offset,m;
+    int i[8]={2,4,6,8,10,12,14,16},key=10;
+    
+    while(f<=8){
+            a=b;
+            b=f;
+            f=a+b;
+            printf("%d",f);
+    }
+    offset=-1;
+   while(f>1) {
+        m=min(offset+b,8-1);
+        if(i[m]>key){
+            f=b;
+            a=a-b;
+            b=f-a;
+        }
+        if(i[m]<key){
+            f=a;
+            a=b;
+            b=f-a;
+            offset=m;
+        }
+        else
+           printf(" %d ",m);
+    }
+     if (a && i[offset + 1] == key)
+                printf(" %d ",m);
+
+    return 0;
+}
