@@ -1,0 +1,49 @@
+/******************************************************************************
+
+                            Online C Compiler.
+                Code, Compile, Run and Debug C program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+*******************************************************************************/
+
+#include <stdio.h>
+int partition(int a[],int k,int l){
+    int pivot,i,j,temp;
+    pivot=a[k];
+    i=k+1;j=l;
+    do{
+        while(a[i]<pivot)
+          i++;
+          while(a[j]>pivot)
+          j--;
+       if(i<j){
+            temp=a[i];
+            a[i]=a[j];
+            a[j]=temp;
+        }
+    }while(i<j);
+    temp=a[k];
+    a[k]=a[j];
+    a[j]=temp;
+    return j;
+}
+void quicksort(int a[],int k,int l){
+    int j;
+    if(k<l){
+        j=partition(a,k,l);
+        quicksort(a,k,j-1);
+        quicksort(a,j+1,l);
+    }
+}
+int main()
+{
+int a[5],i;
+for(i=0;i<5;i++)
+  scanf("%d",&a[i]);
+ 
+ quicksort(a,0,4);
+ for(i=0;i<5;i++)
+  printf("%d",a[i]);
+    return 0;
+}
+
