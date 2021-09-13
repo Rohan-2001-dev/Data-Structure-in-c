@@ -1,0 +1,59 @@
+/******************************************************************************
+
+                            Online C Compiler.
+                Code, Compile, Run and Debug C program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+*******************************************************************************/
+
+#include <stdio.h>
+void partion(int a[],int min,int mid,int max){
+    int temp[10],i,j,k;
+    i=min;
+    j=mid+1;
+    k=min;
+    while(i<=mid&&j<=max){
+        if(a[i]<a[j]){
+            temp[k]=a[i];
+            i++;
+            k++;
+        }
+        else{
+            temp[k]=a[j];
+            j++;
+            k++;
+        }
+    }
+    while(i<=mid){
+        temp[k]=a[i];
+        k++;
+        i++;
+    }
+    while(j<=max){
+        temp[k]=a[j];
+        j++;
+        k++;
+    }
+    for(k=min;k<=max;k++){
+       a[k]=temp[k];
+    }
+}
+void mergesort(int a[],int min ,int max){
+    int mid=(min+max)/2;
+    if(min<max){
+        mergesort(a,min,mid);
+        mergesort(a,mid+1,max);
+        partion(a,min,mid,max);
+    }
+}
+int main()
+{
+  int a[5],i;
+  for(i=0;i<5;i++)
+   scanf("%d",&a[i]);
+  mergesort(a,0,4);
+  for(i=0;i<5;i++)
+   printf("%d ",a[i]);
+
+    return 0;
+}
