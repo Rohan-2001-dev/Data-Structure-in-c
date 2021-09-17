@@ -1,0 +1,43 @@
+/******************************************************************************
+
+                            Online C Compiler.
+                Code, Compile, Run and Debug C program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+*******************************************************************************/
+
+#include <stdio.h>
+#define MAX 7 
+int a[MAX],top=-1;
+int push(int data){
+    if(top==MAX)
+     return 0;
+    if(top==-1)
+      a[++top]=data;
+   a[++top]=data;
+}
+int pop(){
+    int temp;
+    if(top==-1)
+     return 0;
+    temp=a[top];
+    top--;
+    return temp;
+}
+void initialise(){
+    int i,b[MAX],temp;
+    for(i=0;i<MAX;i++){
+        scanf("%d",&b[i]);
+        push(b[i]);
+    }
+    for(i=top;i>0;i--){
+      temp=pop();
+      printf(" %d ",temp);
+    }
+}
+int main()
+{
+    initialise();
+
+    return 0;
+}
