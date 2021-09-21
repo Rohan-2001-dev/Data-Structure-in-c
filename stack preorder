@@ -1,0 +1,97 @@
+/******************************************************************************
+
+                            Online C Compiler.
+                Code, Compile, Run and Debug C program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+*******************************************************************************/
+
+#include <stdio.h>
+#include <string.h>
+#define Max 11
+int b[Max],i=-1;
+void push(int data){
+    if(i>=Max)
+     return;
+    b[++i]=data;
+}
+char expression_converter(){
+    switch(b[i]){
+        case 1:i--;
+               return '-';
+        case 2:i--;
+               return '+';
+        case 3:i--;
+               return '/';
+        case 4:i--;
+               return '*';
+        
+    }
+}
+char pop(){
+    if(i<0)
+     return 'n';
+    return expression_converter();
+}
+void infix_to_prefix(char c[],int n){
+    int j,k=0;
+    char a[Max],d[Max];
+    for(j=0;j<n;j++){
+        switch(c[j]){
+            case '(':push(0);
+                     break;
+            case '-':while(b[i]>=1)
+                     a[k++]=pop();
+                     push(1);
+                     break;
+            case '+':while(b[i]>=2)
+                     a[k++]=pop();
+                     push(2);
+                     break;
+            case '/':while(b[i]>=3)
+                     a[k++]=pop();
+                     push(3);
+                     break; 
+            case '*':while(b[i]>=4)
+                     a[k++]=pop();
+                     push(4);
+                     break;
+            case ')':while(b[i]!=0)
+                     a[k++]=pop();
+                     i--;
+                     break;  
+            default: a[k++]=c[j];
+        }
+        
+    }
+    while(i!=-1)
+      a[k++]=pop();
+    k=0;
+    for(j=n-3;j>=0;j--){
+       
+          d[k++]=a[j];
+    }
+            printf("%s",d);
+
+}
+
+int main()
+{
+    int i,j,k=0;
+    char d[i],a[]="a+b-c/(d*f)";
+    i=strlen(a);
+    for(j=i-1;j>=0,k<i;j--,k++){
+      if(a[j]=='(')
+          d[k]=')';
+      else if(a[j]==')')
+          d[k]='(';
+      else
+          d[k]=a[j];
+     
+
+    }
+
+   infix_to_prefix(d,i);
+
+    return 0;
+}
