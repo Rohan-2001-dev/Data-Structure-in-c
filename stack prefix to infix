@@ -32,12 +32,10 @@ void evalution(string a){
     }
     c3=arr.top();
     arr.pop();
-    i=0;
-    c="";
+   
+    
         cout<< c3 << endl;
-    for(j=c3.length()-1;j>=0;j--){
-        c=c+c3[j];
-    }
+   
 
 }
 
