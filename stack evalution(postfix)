@@ -1,0 +1,69 @@
+/******************************************************************************
+
+                            Online C Compiler.
+                Code, Compile, Run and Debug C program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+*******************************************************************************/
+
+#include <stdio.h>
+int b[11];
+int top=-1;
+void push(int data){
+    if(top>=9)
+     return;
+     top=top+1;
+    b[top]=data;
+}
+int pop(){
+    int i;
+    if(top<0)
+     return 0;
+    i=b[top];
+    top--;
+    return i;
+}
+ void expression(char a[],int n){
+    int i,j,k;
+    for(i=0;i<n;i++){
+         if(a[i]=='+'||a[i]=='-'||a[i]=='/'||a[i]=='*'){
+            j=pop();
+            k=pop();
+            switch(a[i]){
+                case '+':printf(" %d ",j+k);
+                         push(j+k);
+                         break;
+                case '-':printf(" %d ",k-j);
+                         push(k-j);
+                         break;
+                case '*':printf(" %d ",k*j);
+                         push(j*k);
+                         break;
+                case '/':printf(" %d ",k/j);
+                         push(k/j);
+                         break;         
+            }
+        }
+        else{
+            j=(int)a[i]-48;
+           printf("it is j %d ",j);
+            push(j);
+        }
+    }
+    k=pop();
+    printf(" %d",k);
+ }
+int main()
+{
+    char a[11],b[11];
+    int i,j,k=0;
+    scanf("%s",a);
+  //  for(i=10;i>=0;i--)
+  //  b[k++]=a[i];
+    printf(" %s",a);
+   
+    expression(a,11);
+
+
+    return 0;
+}
