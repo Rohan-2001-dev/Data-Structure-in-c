@@ -1,0 +1,39 @@
+/******************************************************************************
+
+                            Online C Compiler.
+                Code, Compile, Run and Debug C program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+*******************************************************************************/
+
+#include <stdio.h>
+#define Max 10
+int queue[Max],rear=-1,front=-1;
+void enqueue(int data){
+    if(rear>=Max)
+      return;
+    queue[++rear]=data;
+
+}
+int dequeue(){
+    front++;
+    if(front>rear){
+     return -1;
+    }
+    return queue[front];
+}
+void operation(int a[],int n){
+    int i;
+    for(i=0;i<n;i++)
+     enqueue(a[i]);
+    for(i=0;i<n;i++)
+     printf("%d",dequeue());
+}
+int main()
+{
+  int a[10],i;
+  for(i=0;i<10;i++)
+   scanf("%d",a+i);
+  operation(a,10);
+    return 0;
+}
