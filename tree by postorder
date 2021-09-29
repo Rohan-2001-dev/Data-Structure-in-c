@@ -1,0 +1,189 @@
+#include <stdio.h>
+#include <stdlib.h>
+typedef struct tree{
+    struct tree *left;
+    int data;
+    struct tree *right;
+}tree;
+tree *root=NULL,*stack[10];
+int top=-1;
+void insert(tree *root,tree *temp){
+    printf(" \n you entered in insert fun ");
+    if(root->data>temp->data){
+        if(root->left==NULL){
+          root->left=temp;
+          root=root->left;
+          printf(" \n you created left node successfully and that is  \n%d",root->data);
+        }
+        else
+          insert(root->left,temp);
+    }
+    else if(root->data<temp->data){
+        if(root->right==NULL){
+          root->right=temp;
+          root=root->right;
+          printf(" \n you created right node successfully and that is \n %d",root->data);
+        }
+        else
+          insert(root->right,temp);
+    }
+    return;
+}
+void create(){
+    tree *temp;
+    temp=(tree *)malloc(sizeof(tree));
+    printf(" \n enter the data to be entered in tree");
+    scanf("%d",&temp->data);
+    temp->right=NULL;
+    temp->left=NULL;
+    if(root==NULL){
+      root=temp;
+      printf(" \n you created root successfully and that is  \n%d",root->data);
+    }
+    else
+       insert(root,temp);
+}
+
+tree *search(tree *root,tree **parrent,int key){
+ 
+    printf("you entered in search fun ");
+    if(root!=NULL){
+    if(root->data==key){
+        printf("we have found the key element whose parrent was \n %d",(*parrent)->data);
+        return root;
+    }
+    else if(root->data>key){
+        *parrent=root;
+        search(root->left,parrent,key);
+        
+    }
+    else if(root->data<key){
+        *parrent=root;
+        search(root->right,parrent,key);
+    }
+  }
+  else
+      {
+        printf("key element is not found in tree"); 
+        return 0;
+      }
+    
+    
+}
+void push(tree *temp){
+    top++;
+    stack[top]=temp;
+
+}
+tree *pop(){
+    tree *temp;
+    temp=stack[top];
+    top--;
+    return temp;
+}
+void display(tree *root){
+    tree *temp,*t;
+   temp=root;
+   do{
+      while(temp!=NULL){
+          if(temp->right!=NULL)
+            push(temp->right);
+          push(temp);
+          temp=temp->left;
+      }
+      t=pop();
+      if(t->right!=NULL && t->right==stack[top]){
+          temp=pop();
+          push(t);
+          
+      }
+      else{
+          printf(" %d ",t->data);
+      }
+     
+   }while(top!=-1);
+   
+    
+}
+void delete(){
+    tree *temp,*t,*parrent,*p;
+    int key;
+    printf(" enter the data to be deleted : ");
+    scanf("%d",&key);
+    temp=search(root,&parrent,key);
+    if(temp->right==NULL&&temp->left==NULL){
+        if(parrent->left==temp)
+           parrent->left=NULL;
+        else
+           parrent->right=NULL;
+    }
+    if(temp->right!=NULL&&temp->left==NULL){
+        if(parrent->left==temp){
+           parrent->left=temp->right;
+           temp->right=NULL;
+        }
+        else{
+           parrent->right=temp->right;
+           temp->right=NULL;
+        }
+    }
+    if(temp->right!=NULL&&temp->left!=NULL){
+        t=temp;
+        p=t;
+        if(t->left!=NULL){
+            t=t->left;
+        
+        while(t->right!=NULL){
+            p=t;
+            t=t->right;
+         }
+           if(t->left!=NULL){
+          p->right=t->left;
+          t->left=NULL;
+        }
+        else
+           p->right=NULL;
+        }
+        else{
+            t=t->right;
+             while(t->left!=NULL){
+            p=t;
+            t=t->left;
+             }
+        if(t->left!=NULL){
+          p->left=t->right;
+          t->right=NULL;
+        }
+        else
+           p->left=NULL;
+        
+      
+        temp->data=t->data;
+    }
+    
+}
+}
+int main()
+{
+   int i,key;
+   char j;
+   tree *parrent,*temp;
+   while(1){
+       printf(" \n  enter the choice : ");
+       scanf("%d",&i);
+       switch(i){
+           case 1:
+                   printf("  \n you are creating a node in tree ");
+                   create();
+                   break;
+            case 2:display(root);
+                   break;
+            case 3:delete();
+                   break;
+            default:printf("  \n you have entered wrong choice ");
+       }
+   }
+
+    return 0;
+}
+
