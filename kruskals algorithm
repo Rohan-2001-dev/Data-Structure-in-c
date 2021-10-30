@@ -1,0 +1,106 @@
+/******************************************************************************
+
+                            Online C Compiler.
+                Code, Compile, Run and Debug C program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+*******************************************************************************/
+
+#include <stdio.h>
+#include <stdlib.h>
+#define n 11
+#define e 8
+typedef struct node {
+    int v1;
+    int v2;
+    int l;
+}node;
+node g[n];
+int visit[e][e],m_dist=0;
+void initialise(){
+    int i,j;
+    for(i=0;i<e;i++){
+        for(j=0;j<e;j++)
+          visit[i][j]=-1;
+    }
+}
+void data_entry(){
+    int i,j;
+    for(i=0;i<n;i++){
+        printf("please enter the vertices in (v1,v2) form and their length : ");
+        scanf("%d %d %d",&g[i].v1,&g[i].v2,&g[i].l);
+    }
+}
+int find_min_length(){
+   int i,j,k,m=999,flag=1,x=-1;
+   for(i=0;i<n;i++){
+      if(g[i].l!=-1){
+       for(j=0;j<e;j++){
+           for(k=0;k<e;k++){
+               if(visit[g[i].v1][j]==visit[g[i].v2][k] && (visit[g[i].v1][j]!=-1 && visit[g[i].v2][k]!=-1))
+               {
+                   flag=0;
+                   break;
+               }
+           }
+           
+           if(flag==0)
+             break;
+       }
+       if(flag==1 && m>=g[i].l){
+          m=g[i].l;
+          x=i;
+       }
+       
+     }
+  }
+  printf("we have got minimum %d %d %d %d \n' ",g[x].v1,g[x].v2,g[x].l,x);
+  return x;
+}
+void graph(){
+    int i,j,k;
+    for(i=0;i<e-1;i++){
+        j=-1;
+        j=find_min_length();
+        printf("the index returned from sort is %d \n",j);
+        if(j==-1 ||	g[j].l==-1)
+          continue;
+        m_dist=m_dist+g[j].l;
+        printf("the min dist is %d and m_sapnnig tree is %d\n",g[j].l,m_dist);
+        for(k=0;k<e;k++){
+            if(visit[g[j].v1][k]==-1){
+               visit[g[j].v1][k]=g[j].v2;
+               break;
+              // printf("we have entered v2=%d vertex in v1=%d at index %d",g[j].v2,g[j].v1,k);
+            }
+        }
+         for(k=0;k<e;k++){
+            if(visit[g[j].v2][k]==-1){
+               visit[g[j].v2][k]=g[j].v1;
+               break;
+               //printf("we have entered v2=%d vertex in v1=%d at index %d",g[j].v1,g[j].v2,k);
+            }
+        }
+        g[j].l=-1;
+        printf(" the length of vertex %d and %d is become now %d \n ",g[j].v1,g[j].v2,g[j].l);
+        
+    }
+    for(i=0;i<e;i++){
+        for(j=0;j<e;j++){
+            if(visit[i][j]==-1)
+              continue;
+            printf("%d ",visit[i][j]);
+        }
+        printf("\n");
+    }
+    printf(" \n minimal spannig tree is %d",m_dist);
+}
+int main()
+{
+    initialise();
+    data_entry();
+    graph();
+    printf("Hello World");
+
+    return 0;
+}
