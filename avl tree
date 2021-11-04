@@ -1,0 +1,214 @@
+/******************************************************************************
+
+                            Online C Compiler.
+                Code, Compile, Run and Debug C program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+*******************************************************************************/
+
+#include <stdio.h>
+#include <stdlib.h>
+typedef struct node{
+    int data,height;
+    struct node *right,*left;
+}node;
+node *roo=NULL;
+int height(node *root){
+    if(root==NULL)
+      return 0;
+    return root->height;
+}
+int get_max(int a,int b){
+    return a>b?a:b;
+}
+int get_height(node *root){
+    return 1+get_max(height(root->left),height(root->right));
+}
+
+int get_balance(node *i,node *j){
+   
+    return height(i)-height(j);
+}
+node *newnode(int data){
+    node *root;
+    root=malloc(sizeof(node *));
+    root->data=data;
+    printf(" entered in newnode %d",root->data);
+    root->height=0;
+    root->left=NULL;
+    root->right=NULL;
+    return root;
+}
+node* ll_rotation(node *root){
+    node *temp,*temp2;
+        printf(" entered in ll ");
+    temp=root;
+    temp2=temp->left;
+          temp->left=temp2->right;
+          temp2->right=temp;
+          temp->height=get_height(temp);
+          temp2->height=get_height(temp2);
+    return temp2;
+    
+}
+node* rr_rotation(node *root){
+    node *temp,*temp2;
+        printf(" entered in rr ");
+    temp=root;
+    temp2=temp->right;
+          temp->right=temp2->left;
+          temp2->left=temp;
+          temp->height=get_height(temp);
+          temp2->height=get_height(temp2);
+        return temp2;
+    
+}
+node* lr_rotation(node *root,node *left){
+    node *temp,*temp2,*temp3;
+        printf(" entered in lr ");
+
+    temp=root;
+    temp2=left;
+    temp3=temp2->right;
+          temp->left=temp3->right;
+          temp2->right=temp3->left;
+          temp3->right=temp;
+          temp3->left=temp2;
+          temp->height=get_height(temp);
+          temp2->height=get_height(temp2);
+          temp3->height=get_height(temp3);
+        return temp3;
+}
+node* rl_rotation(node *root,node *right){
+    node *temp,*temp2,*temp3;
+        printf(" entered in rl ");
+
+    temp=root;
+    temp2=right;
+    temp3=temp2->left;
+          temp->right=temp3->left;
+          temp2->left=temp3->right;
+          temp3->right=temp2;
+          temp3->left=temp;
+          temp->height=get_height(temp);
+          temp2->height=get_height(temp2);
+          temp3->height=get_height(temp3);
+      return temp3;
+        
+}
+
+node* check(int balance,node *root,int data){
+     if(balance>1){
+        if(root->left->data>data)
+         root= ll_rotation(root);
+        else if(root->left->data<data)
+         root=lr_rotation(root,root->left);
+    }
+    else if(balance<-1){
+        if(root->right->data<data)
+         root=rr_rotation(root);
+       
+        else if(root->right->data>data)
+         root=rl_rotation(root,root->right);
+
+    }
+    
+    return root;
+}
+node*check1(int balance,node *root){
+    if(balance>1 && get_balance((root->left->left),(root->left->right))>=0)
+         root= ll_rotation(root);
+    if(balance>1 &&  get_balance((root->left->left),(root->left->right))<0)
+         root= lr_rotation(root,root->left);
+    if(balance<-1 &&  get_balance((root->left->left),(root->left->right))<=0)
+         root= rr_rotation(root);
+    if(balance<-1 &&  get_balance((root->left->left),(root->left->right))>0)
+         root= rl_rotation(root,root->right);
+    return root;
+    
+}
+node *find_replace(node *temp,node *temp2){
+    int balance;
+    if(temp->left==NULL){
+        temp->left=temp2;
+    }
+    else
+       temp->left=find_replace(temp->left,temp2);
+    temp->height=get_height(temp);
+    balance=get_balance(temp->left,temp->right);
+    temp=check1(balance,temp);
+    return temp;
+       
+    
+}
+node *find_and_delete(node *root,int key){
+    node *temp;
+    int balance;
+    if(root->data==key){
+       printf("key is found " );
+     if(root->right==NULL && root->left==NULL)
+       return NULL;
+     if(root->right==NULL &&root->left!=NULL){
+         return root->left;
+     }
+     if(root->right!=NULL &&root->left==NULL){
+          return root->right;
+     }
+     if(root->right!=NULL && root->left!=NULL){
+         root=find_replace(root->right,root->left);
+        return root;
+     }
+    }
+    else if(root->data>key)
+      root->left=find_and_delete(root->left,key);
+    else if(root->data<key)
+      root->right=find_and_delete(root->right,key);
+    root->height=get_height(root);
+    balance=get_balance(root->left,root->right);
+    root=check1(balance,root);
+    return root;
+    
+   
+    
+}
+node* avl(node *root,int data){
+    int balance;
+    printf(" entered in avl ");
+    if(root==NULL)
+      root=newnode(data);
+    else if(root->data>data){
+      root->left=avl(root->left,data);
+    }
+    else if(root->data<data){
+      root->right=avl(root->right,data);
+    }
+    root->height=get_height(root);
+    balance=get_balance(root->left,root->right);
+    root=check(balance,root,data);
+       return root;
+}
+void display(node *root){
+    if(root!=NULL){
+        printf(" %d ",root->data);
+        display(root->left);
+        display(root->right);
+    }
+}
+int main()
+{
+    int a[13],i;
+    for(i=0;i<13;i++){
+        printf(" enter the data : ");
+        scanf("%d",(a+i));
+    }
+    for(i=0;i<13;i++){
+        roo=avl(roo,a[i]);
+    }
+    //printf("%d %d %d",roo->data,roo->left->data,roo->right->data);
+   
+    display(roo);
+    find_and_delete(roo,14);
+    display(roo);
+
+    return 0;
+}
