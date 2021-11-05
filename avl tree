@@ -115,49 +115,34 @@ node* check(int balance,node *root,int data){
     
     return root;
 }
-node*check1(int balance,node *root){
-    if(balance>1 && get_balance((root->left->left),(root->left->right))>=0)
-         root= ll_rotation(root);
-    if(balance>1 &&  get_balance((root->left->left),(root->left->right))<0)
-         root= lr_rotation(root,root->left);
-    if(balance<-1 &&  get_balance((root->left->left),(root->left->right))<=0)
-         root= rr_rotation(root);
-    if(balance<-1 &&  get_balance((root->left->left),(root->left->right))>0)
-         root= rl_rotation(root,root->right);
-    return root;
-    
+node* get_min(node *t1){
+   
+   while(t1->left!=NULL)
+     t1=t1->left;
+   // printf(" ====%d %d %d ===",root->data,root->left->data,root->right->data);
+    return t1;
 }
-node *find_replace(node *temp,node *temp2){
-    int balance;
-    if(temp->left==NULL){
-        temp->left=temp2;
-    }
-    else
-       temp->left=find_replace(temp->left,temp2);
-    temp->height=get_height(temp);
-    balance=get_balance(temp->left,temp->right);
-    temp=check1(balance,temp);
-    return temp;
-       
-    
-}
+
 node *find_and_delete(node *root,int key){
     node *temp;
     int balance;
     if(root->data==key){
        printf("key is found " );
-     if(root->right==NULL && root->left==NULL)
+        if(root->right==NULL && root->left==NULL)
        return NULL;
      if(root->right==NULL &&root->left!=NULL){
+             root->height=get_height(root);
          return root->left;
      }
      if(root->right!=NULL &&root->left==NULL){
+          root->height=get_height(root);
           return root->right;
      }
      if(root->right!=NULL && root->left!=NULL){
-         root=find_replace(root->right,root->left);
-        return root;
-     }
+        temp=get_min(root->right);
+        root->data=temp->data;
+        root->right=find_and_delete(root->right,temp->data);
+    }
     }
     else if(root->data>key)
       root->left=find_and_delete(root->left,key);
@@ -165,12 +150,28 @@ node *find_and_delete(node *root,int key){
       root->right=find_and_delete(root->right,key);
     root->height=get_height(root);
     balance=get_balance(root->left,root->right);
-    root=check1(balance,root);
+    
+    if(balance>1){
+             if(get_balance(root->left->left,root->left->right)>=0)
+               root=ll_rotation(root);
+             if(get_balance(root->left->left,root->left->right)<0)
+               root=lr_rotation(root,root->left);
+         }
+         if(balance<-1){
+             if(get_balance(root->right->left,root->right->right)<=0)
+                root=rr_rotation(root);
+             if(get_balance(root->right->left,root->right->right)>0)
+               root=rl_rotation(root,root->right);
+         }
+    
+    
+    //root=check1(balance,root);
     return root;
     
    
     
 }
+
 node* avl(node *root,int data){
     int balance;
     printf(" entered in avl ");
@@ -196,18 +197,18 @@ void display(node *root){
 }
 int main()
 {
-    int a[13],i;
-    for(i=0;i<13;i++){
+    int a[12],i;
+    for(i=0;i<12;i++){
         printf(" enter the data : ");
         scanf("%d",(a+i));
     }
-    for(i=0;i<13;i++){
+    for(i=0;i<12;i++){
         roo=avl(roo,a[i]);
     }
     //printf("%d %d %d",roo->data,roo->left->data,roo->right->data);
    
     display(roo);
-    find_and_delete(roo,14);
+    roo=find_and_delete(roo,10);
     display(roo);
 
     return 0;
