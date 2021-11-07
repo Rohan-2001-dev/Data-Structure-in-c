@@ -1,0 +1,183 @@
+/******************************************************************************
+
+                            Online C Compiler.
+                Code, Compile, Run and Debug C program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+*******************************************************************************/
+
+#include <stdio.h>
+#define n 10
+int a[n],count=-1;
+void heap(int data){
+    int i,j,temp;
+    if(count==-1)
+      a[++count]=data;
+    else{
+        a[++count]=data;
+    }
+    i=count;
+    j=(i-1)/2;
+    while(i!=0){
+        if(a[j]<a[i]){
+            temp=a[j];
+            a[j]=a[i];
+            a[i]=temp;
+            i=(i-1)/2;
+            j=(i-1)/2;
+        }
+        else
+          break;
+        
+        
+    }
+}
+void delete(){
+int i,temp,j,k,l;
+temp=a[count];
+a[count]=a[0];
+a[0]=temp;
+count--;
+l=count;
+i=0;
+temp=0;
+ while(i<l){
+             j=2*i+1;
+             k=2*i+2;
+             if(j==l || k==l) {
+                 if(j==l){
+                     if(a[j]>a[i]){
+                         temp=a[j];
+                         a[j]=a[i];
+                         a[i]=temp;
+                         i=j;
+                     }
+                     else 
+                      break;
+                 }
+                 else if(k==l){
+                     if(a[j]<a[k] && a[k]>a[i] ){
+                          temp=a[k];
+                          a[k]=a[i];
+                          a[i]=temp;
+                          i=k;
+                     }
+                     else if(a[j]>a[k] && a[j]>a[i]){
+                         temp=a[j];
+                         a[j]=a[i];
+                         a[i]=temp;
+                         i=j;
+                     }
+                     else
+                        break;
+                 }
+                 
+                    
+             }
+           else if(a[j]>a[k] && a[j]>a[i]&& j<=l){
+               temp=a[j];
+               a[j]=a[i];
+               a[i]=temp;
+               i=j;
+            }
+            else if(a[j]<a[k] && a[k]>a[i] &&k<=l){
+               temp=a[k];
+               a[k]=a[i];
+               a[i]=temp;
+               i=k;
+            }
+             else 
+               break;
+    }
+
+}
+void display(){
+    int i;
+    for(i=0;i<=count;i++)
+     printf(" %d ",a[i]);
+}
+void dis_parrent(){
+   int i;
+  for(i=0;i<=count;i++){
+    printf(" %d \n",a[i]);
+    printf("%d %d\n",a[2*i+1],a[2*i+2]);
+  }
+}
+void heap_sort(){
+    int i,j,k,l,m,temp;
+    l=count;
+    printf("l is %d ",l);
+    for(;l>0;){
+        printf(" before swapping of a[0]=%d and a[l]=%d ",a[0],a[l]);
+        temp=a[0];
+        a[0]=a[l];
+        a[l]=temp;
+        printf(" after swapping of a[0]=%d and a[l]=%d ",a[0],a[l]);
+        i=0;
+        l--;
+        printf(" l after decreasing is %d ",l);
+        while(i<l){
+             j=2*i+1;
+             k=2*i+2;
+             if(j==l || k==l) {
+                 if(j==l){
+                     if(a[j]>a[i]){
+                         temp=a[j];
+                         a[j]=a[i];
+                         a[i]=temp;
+                         i=j;
+                     }
+                     else 
+                      break;
+                 }
+                 else if(k==l){
+                     if(a[j]<a[k] && a[k]>a[i] ){
+                          temp=a[k];
+                          a[k]=a[i];
+                          a[i]=temp;
+                          i=k;
+                     }
+                     else if(a[j]>a[k] && a[j]>a[i]){
+                         temp=a[j];
+                         a[j]=a[i];
+                         a[i]=temp;
+                         i=j;
+                     }
+                     else
+                        break;
+                 }
+                 
+                    
+             }
+           else if(a[j]>a[k] && a[j]>a[i]&& j<=l){
+               temp=a[j];
+               a[j]=a[i];
+               a[i]=temp;
+               i=j;
+            }
+            else if(a[j]<a[k] && a[k]>a[i] &&k<=l){
+               temp=a[k];
+               a[k]=a[i];
+               a[i]=temp;
+               i=k;
+            }
+             else 
+               break;
+    }
+    }
+  
+}
+int main()
+{
+    int i,j;
+    for(i=0;i<n;i++){
+        printf("enter the data : ");
+        scanf("%d",&j);
+        heap(j);
+    }
+    display();
+    delete();
+    heap_sort();
+    display();
+    return 0;
+}
